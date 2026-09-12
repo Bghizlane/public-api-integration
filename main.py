@@ -1,8 +1,8 @@
 import requests
 
 
-def get_github_api():
-    url = "https://api.github.com"
+def get_github_user(username):
+    url = f"https://api.github.com/users/{username}"
 
     try:
         response = requests.get(url, timeout=10)
@@ -10,12 +10,14 @@ def get_github_api():
 
         data = response.json()
 
-        print("API connection successful.")
-        print(data)
+        print("User:", data["login"])
+        print("Name:", data["name"])
+        print("Public repositories:", data["public_repos"])
+        print("Followers:", data["followers"])
 
     except requests.RequestException as error:
         print("API request failed.")
         print(error)
 
 
-get_github_api()
+get_github_user("bghizlane")
