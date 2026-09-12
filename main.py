@@ -1,23 +1,32 @@
 import requests
 
 
-def get_github_user(username):
-    url = f"https://api.github.com/users/{username}"
+def get_user_repositories(username):
+    url = f"https://api.github.com/users/{username}/repos"
+
+    params = {
+        "per_page": 5
+    }
 
     try:
-        response = requests.get(url, timeout=10)
+        response = requests.get(
+            url,
+            params=params,
+            timeout=10
+        )
+
         response.raise_for_status()
 
-        data = response.json()
+        repositories = response.json()
 
-        print("User:", data["login"])
-        print("Name:", data["name"])
-        print("Public repositories:", data["public_repos"])
-        print("Followers:", data["followers"])
+        print(f"Repositories for {username}:")
+
+        for repository in repositories:
+            print("-", repository["name"])
 
     except requests.RequestException as error:
         print("API request failed.")
         print(error)
 
 
-get_github_user("bghizlane")
+get_user_repositories("Bghizlane")
